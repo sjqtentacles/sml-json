@@ -1,8 +1,10 @@
 # sml-json
 
-A small, dependency-free **JSON parser and serializer** for Standard ML, built
+A small, self-contained **JSON parser and serializer** for Standard ML, built
 on the [`sml-parsec`](https://github.com/sjqtentacles/sml-parsec) parser
-combinator library. Parses to a simple algebraic data type, serializes back to
+combinator library. `sml-parsec` is vendored (its source is committed under
+`lib/`), so there are no external dependencies to install or fetch — clone the
+repo and `make`. Parses to a simple algebraic data type, serializes back to
 minified or pretty-printed JSON, and ships with a tiny `jsonfmt` CLI.
 
 Verified TDD-style on both **MLton** and **Poly/ML**.
