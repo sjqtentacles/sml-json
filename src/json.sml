@@ -1,6 +1,6 @@
 (* src/json.sml -- JSON AST + parser. Built on the vendored sml-parsec. *)
 
-structure Json =
+structure Json :> JSON =
 struct
   datatype json =
       JNull

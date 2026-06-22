@@ -1,21 +1,17 @@
-(* Dependency-free test runner for sml-json. *)
+(* Test suite for sml-json, standardized on the shared sml-test Harness. *)
 
-infix 1 >>= >>
-infix 1 <*
-infix 4 <*> <$>
-infixr 1 <|>
-infix 0 <?>
+structure Tests =
+struct
+  open Harness
 
-open CharParsec
-open Json
+  infix 1 >>= >>
+  infix 1 <*
+  infix 4 <*> <$>
+  infixr 1 <|>
+  infix 0 <?>
 
-val passed = ref 0
-val failed = ref 0
-
-fun check (name : string) (cond : bool) : unit =
-    if cond
-    then (passed := !passed + 1; print ("ok   - " ^ name ^ "\n"))
-    else (failed := !failed + 1; print ("FAIL - " ^ name ^ "\n"))
+  open CharParsec
+  open Json
 
 (* json has no derived equality (it contains real), so tests use this:
  * JInt exact, JReal within a small tolerance, JObj compared as ordered
@@ -239,18 +235,12 @@ fun runSerializerTests () =
                    (List.all roundTripPretty samples)
   in () end
 
-fun run () =
-  let
-    val () = runLiteralTests ()
-    val () = runNumberTests ()
-    val () = runStringTests ()
-    val () = runArrayObjectTests ()
-    val () = runDriverTests ()
-    val () = runSerializerTests ()
-  in
-    print ("\n" ^ Int.toString (!passed) ^ " passed, "
-           ^ Int.toString (!failed) ^ " failed\n");
-    OS.Process.exit (if !failed = 0 then OS.Process.success else OS.Process.failure)
-  end
-
-val () = run ()
+  fun run () =
+    (runLiteralTests ();
+     runNumberTests ();
+     runStringTests ();
+     runArrayObjectTests ();
+     runDriverTests ();
+     runSerializerTests ();
+     Harness.run ())
+end
